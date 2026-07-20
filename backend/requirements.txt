@@ -1,0 +1,55 @@
+# ─────────────────────────────────────────────────────────────────
+# QuickDesk — Backend Dependencies (All Segments)
+# Install: pip install -r requirements.txt
+# ─────────────────────────────────────────────────────────────────
+
+# ── Web Framework ─────────────────────────────────────────────────
+numpy>=2.1.0                   # Pre-built wheels for Python 3.13 on Windows
+fastapi==0.111.0
+uvicorn[standard]==0.30.1
+python-multipart==0.0.9        # form data / file uploads
+
+# ── Database (SQLite via SQLAlchemy) ──────────────────────────────
+sqlalchemy>=2.0.35
+
+# ── Auth & Security ───────────────────────────────────────────────
+bcrypt>=4.0.0                  # Modern, compiled password hashing library
+python-jose[cryptography]>=3.3.0  # Allow newer cryptography for Python 3.13 wheels
+cryptography>=43.0.0           # Pre-built wheels for Python 3.13 on Windows
+
+# ── Config & Env ──────────────────────────────────────────────────
+pydantic>=2.7.4
+pydantic-settings>=2.2.1
+python-dotenv==1.0.1
+
+# ── Email validation (used by pydantic EmailStr) ───────────────────
+email-validator==2.1.1
+
+# ── Groq LLM (Segment 2 & 3) ─────────────────────────────────────
+groq==0.9.0
+
+# ── LangChain Core (Segment 3 — RAG) ─────────────────────────────
+langchain>=0.3.9
+langchain-core>=0.3.0
+langchain-community>=0.3.0
+
+# ── LangChain Groq integration ────────────────────────────────────
+langchain-groq>=0.2.0
+
+# ── LangChain Pinecone integration ────────────────────────────────
+langchain-pinecone>=0.2.0
+
+# ── LangChain HuggingFace embeddings ─────────────────────────────
+langchain-huggingface>=0.1.0
+
+# ── Pinecone Vector DB client ─────────────────────────────────────
+pinecone-client>=4.1.0
+
+# ── Sentence Transformers (local embeddings, no API key needed) ───
+sentence-transformers>=3.1.0
+
+# ── SSE (Segment 4 — Real-time) ──────────────────────────────────
+sse-starlette>=2.0.0
+
+# ── HTTP client (used internally by LangChain) ────────────────────
+httpx>=0.27.0
