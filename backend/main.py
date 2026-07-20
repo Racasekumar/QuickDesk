@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from core.config import settings
 from database import Base, engine
-from routers import auth, users
+from routers import auth, tickets, users
 
 # Create all DB tables
 Base.metadata.create_all(bind=engine)
@@ -20,6 +20,7 @@ app.add_middleware(
 
 app.include_router(auth.router, prefix="/auth", tags=["Auth"])
 app.include_router(users.router, prefix="/users", tags=["Users"])
+app.include_router(tickets.router, prefix="/tickets", tags=["Tickets"])
 
 
 @app.get("/health")

@@ -26,12 +26,13 @@ python-dotenv==1.0.1
 email-validator==2.1.1
 
 # ── Groq LLM (Segment 2 & 3) ─────────────────────────────────────
-groq==0.9.0
+groq>=0.30.0,<1  # compatible with langchain-groq and current httpx
 
 # ── LangChain Core (Segment 3 — RAG) ─────────────────────────────
 langchain>=0.3.9
 langchain-core>=0.3.0
 langchain-community>=0.3.0
+langgraph>=0.2.0
 
 # ── LangChain Groq integration ────────────────────────────────────
 langchain-groq>=0.2.0
@@ -52,4 +53,4 @@ sentence-transformers>=3.1.0
 sse-starlette>=2.0.0
 
 # ── HTTP client (used internally by LangChain) ────────────────────
-httpx>=0.27.0
+httpx>=0.28
