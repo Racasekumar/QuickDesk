@@ -3,26 +3,126 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
+  /* Backgrounds */
   --bg:        #0f1117;
   --bg-card:   #1a1d27;
+  --bg-card-h: #1e212d;
   --bg-input:  #13151f;
+  --bg-input-h:#151823;
+
+  /* Borders */
   --border:    #2a2d3e;
+  --border-light:#363a4f;
+
+  /* Colors */
   --primary:   #6366f1;
   --primary-h: #4f52d9;
+  --primary-a: rgba(99, 102, 241, 0.1);
   --danger:    #ef4444;
+  --danger-a:  rgba(239, 68, 68, 0.1);
   --success:   #22c55e;
+  --success-a: rgba(34, 197, 94, 0.1);
   --warning:   #f59e0b;
+  --warning-a: rgba(245, 158, 11, 0.1);
+
+  /* Text */
   --text:      #e2e8f0;
   --text-muted:#8892a4;
+  --text-light:#9aa3b2;
+
+  /* Spacing (8pt scale) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10:40px;
+  --space-12:48px;
+
+  /* Border Radius */
+  --radius-sm: 6px;
   --radius:    10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.15);
+  --shadow:    0 4px 12px rgba(0,0,0,0.2);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,0.3);
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition:     200ms ease;
+  --transition-slow:300ms ease;
 }
 
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background: var(--bg);
   color: var(--text);
   min-height: 100vh;
+  line-height: 1.6;
 }
 
-a { color: var(--primary); text-decoration: none; }
-a:hover { text-decoration: underline; }
+a { color: var(--primary); text-decoration: none; transition: var(--transition); }
+a:hover { text-decoration: underline; opacity: 0.9; }
+
+/* Typography Hierarchy */
+h1 { font-size: 2.5rem; font-weight: 700; line-height: 1.2; }
+h2 { font-size: 2rem; font-weight: 700; line-height: 1.25; }
+h3 { font-size: 1.5rem; font-weight: 600; line-height: 1.3; }
+h4 { font-size: 1.25rem; font-weight: 600; line-height: 1.4; }
+h5 { font-size: 1.125rem; font-weight: 500; line-height: 1.4; }
+p { font-size: 1rem; }
+.small { font-size: 0.875rem; }
+.caption { font-size: 0.75rem; }
+
+/* Form Elements Base */
+input, textarea, select {
+  font-family: inherit;
+  font-size: 1rem;
+  color: var(--text);
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-3) var(--space-4);
+  transition: var(--transition);
+  outline: none;
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-a);
+}
+
+input:disabled, textarea:disabled, select:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  transition: var(--transition);
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  h1 { font-size: 1.875rem; }
+  h2 { font-size: 1.5rem; }
+  h3 { font-size: 1.25rem; }
+
+  :root {
+    --space-6: 20px;
+    --space-8: 24px;
+    --space-10:32px;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 { font-size: 1.5rem; }
+  h2 { font-size: 1.25rem; }
+}
