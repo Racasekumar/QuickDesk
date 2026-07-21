@@ -37,6 +37,8 @@ class TicketOut(BaseModel):
     status: str
     ai_category: Optional[str]
     ai_priority: Optional[str]
+    final_category: Optional[str]
+    final_priority: Optional[str]
     created_at: datetime
     resolved_at: Optional[datetime]
     creator: TicketCreator

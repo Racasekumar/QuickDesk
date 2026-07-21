@@ -13,6 +13,7 @@ from models.audit_log import AuditLog
 from schemas.ticket import ClassificationUpdate, ReplyCreate, TicketCreate, TicketDetailOut, TicketOut
 from services.ai_service import suggest_ticket_details
 from services.rag_service import RagUnavailableError, generate_draft
+from services.event_bus import event_bus
 
 router = APIRouter()
 
@@ -37,6 +38,7 @@ def create_ticket(
     db.add(ticket)
     db.commit()
     db.refresh(ticket)
+    event_bus.publish("ticket_created", TicketOut.model_validate(ticket).model_dump(mode="json"))
     return ticket
 
 
@@ -54,6 +56,23 @@ def get_my_tickets(
     )
 
 
+@router.get("/mine/{ticket_id}", response_model=TicketDetailOut)
+def get_my_ticket_detail(
+    ticket_id: int,
+    current_user: User = Depends(require_employee),
+    db: Session = Depends(get_db),
+):
+    ticket = (
+        db.query(Ticket)
+        .options(joinedload(Ticket.creator), joinedload(Ticket.audit_logs).joinedload(AuditLog.agent))
+        .filter(Ticket.id == ticket_id, Ticket.created_by == current_user.id)
+        .first()
+    )
+    if not ticket:
+        raise HTTPException(status_code=404, detail="Ticket not found")
+    return _detail(ticket)
+
+
 @router.get("", response_model=list[TicketOut])
 def get_all_tickets(
     status: Optional[TicketStatus] = None,
@@ -67,9 +86,9 @@ def get_all_tickets(
     if status:
         query = query.filter(Ticket.status == status)
     if category:
-        query = query.filter(Ticket.ai_category == category)
+        query = query.filter(Ticket.final_category == category)
     if priority:
-        query = query.filter(Ticket.ai_priority == priority)
+        query = query.filter(Ticket.final_priority == priority)
     if search:
         query = query.filter(Ticket.title.ilike(f"%{search}%"))
     return query.order_by(Ticket.created_at.desc()).all()
@@ -171,4 +190,5 @@ def send_reply_and_resolve(
     ticket.status = TicketStatus.resolved
     ticket.resolved_at = datetime.utcnow()
     db.commit()
+    event_bus.publish("ticket_resolved", {"id": ticket.id, "status": "resolved", "resolved_at": ticket.resolved_at.isoformat() if ticket.resolved_at else None, "created_by": ticket.created_by})
     return _detail(_get_ticket_or_404(ticket_id, db))
